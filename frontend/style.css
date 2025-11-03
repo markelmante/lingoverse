@@ -1,0 +1,281 @@
+:root {
+    --color-blanco: #FFFFFF;
+    --color-fondo: #C2DCF2;
+    --color-boton: #7DACDA;
+    --color-footer-nav: #253D58;
+    --color-tablero: #5D8EC3;
+    --fuente-principal: 'Viga', sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    font-family: var(--fuente-principal);
+    background-color: var(--color-fondo);
+    color: #000;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* --- HEADER --- */
+header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
+}
+
+.encabezado {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 1rem;
+    padding: 0 1rem;
+}
+
+.encabezado .logo {
+    width: 60%;
+    max-width: 200px;
+    height: auto;
+}
+
+.encabezado .cuenta {
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+}
+
+.menu-container {
+    width: 100%;
+    background-color: var(--color-footer-nav);
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    padding: 0.5rem 0;
+    margin-bottom: 0.5rem;
+}
+
+.menu-toggle {
+    font-size: 2rem;
+    color: var(--color-blanco);
+    cursor: pointer;
+}
+
+.nav-menu {
+    display: none;
+    width: 100%;
+}
+
+.nav-menu.active {
+    display: block;
+}
+
+nav {
+    background-color: var(--color-footer-nav);
+    width: 100%;
+    border-radius: 10px;
+    padding: 1rem 0;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    width: 100%;
+    padding: 0 1rem;
+    margin: 0;
+}
+
+nav li a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.7rem;
+    width: 100%;
+    padding: 0.8rem 1rem;
+    text-decoration: none;
+    background-color: var(--color-boton);
+    color: var(--color-blanco);
+    border-radius: 8px;
+    font-size: 1.1rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s, transform 0.2s, box-shadow 0.2s;
+}
+
+nav li a img {
+    width: 30px;
+    height: 30px;
+    object-fit: contain;
+    transition: transform 0.3s;
+}
+
+nav li a:hover {
+    background-color: var(--color-tablero);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+nav li a:hover img {
+    transform: scale(1.2);
+}
+
+/* --- MAIN --- */
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    padding: 1rem;
+    flex: 1;
+    /* para empujar el footer al fondo */
+}
+
+/* Tablero */
+.tablero {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.tablero .fila {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0.5rem;
+}
+
+.mensaje {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #000;
+    text-align: center;
+}
+
+.celda {
+    width: 60px;
+    height: 60px;
+    background-color: #FFFFFF;
+    border: 2px solid black;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+/* Teclado */
+.teclado {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.fila-teclado {
+    display: flex;
+    justify-content: center;
+    gap: 0.3rem;
+}
+
+.fila-teclado button {
+    width: 40px;
+    height: 50px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    background-color: #7DACDA;
+    color: white;
+    cursor: pointer;
+    transition: transform 0.1s, background-color 0.2s;
+}
+
+.fila-teclado button:hover {
+    background-color: #5D8EC3;
+    transform: translateY(-2px);
+}
+
+/* --- FOOTER --- */
+footer {
+    background-color: var(--color-footer-nav);
+    color: var(--color-blanco);
+    padding: 1rem;
+    width: 100%;
+}
+
+footer .footer-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+footer .emojis {
+    display: flex;
+    gap: 1rem;
+}
+
+footer .emojis img {
+    width: 30px;
+    height: 30px;
+}
+
+/* --- MEDIA QUERIES MÓVIL --- */
+@media (max-width: 450px) {
+
+    /* Tablero */
+    .celda {
+        width: 45px;
+        height: 45px;
+        border-radius: 8px;
+        font-size: 1.2rem;
+    }
+
+    /* Teclado */
+    .fila-teclado button {
+        width: 26px;
+        height: 40px;
+        font-size: 0.9rem;
+    }
+
+    /* Botones del nav */
+    nav li a {
+        padding: 0.6rem;
+    }
+
+    nav li a img {
+        width: 25px;
+        height: 25px;
+    }
+
+    /* Contenedor del menú hamburguesa */
+    .menu-container {
+        padding: 0.3rem;
+    }
+
+    .menu-toggle {
+        font-size: 1.8rem;
+    }
+
+    footer .emojis img {
+        width: 25px;
+        height: 25px;
+    }
+
+    footer p {
+        font-size: 0.8rem;
+    }
+}
