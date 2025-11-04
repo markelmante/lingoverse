@@ -35,8 +35,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         jugando = true;
         clearInterval(timerInterval);
 
-        tiempoInicio = Date.now(); // <-- NUEVO: guardamos la hora de inicio
-
         try {
             const response = await fetch("http://185.60.43.155:3000/api/word/1");
             const data = await response.json();
