@@ -137,24 +137,52 @@ main {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 2rem;
-    padding: 1rem;
+    justify-content: flex-start;
+    /* pegamos el contenido arriba */
+    gap: 1rem;
+    /* menos separación entre elementos */
+    padding: 0.5rem 1rem 1rem;
+    /* menos padding superior */
     flex: 1;
-    /* para empujar el footer al fondo */
 }
 
-/* Tablero */
+
+/* --- TABLERO --- */
 .tablero {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
-    margin-bottom: 1.5rem;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    margin-bottom: 1rem;
+    /* antes era 1.5rem */
+    width: 100%;
 }
 
-.tablero .fila {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
+
+/* Contenedor de cada fila + contador */
+.fila-contenedor {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+}
+
+/* Fila de celdas */
+.fila {
+    display: flex;
+    justify-content: center;
     gap: 0.5rem;
+}
+
+/* Contador de tiempo */
+.contador {
+    font-weight: bold;
+    color: #253D58;
+    font-size: 1rem;
+    min-width: 45px;
+    text-align: left;
 }
 
 .mensaje {
@@ -233,10 +261,43 @@ footer .emojis img {
     height: 30px;
 }
 
+.mensaje {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #000;
+    text-align: center;
+}
+
+.btn-reiniciar {
+    display: none;
+    background-color: var(--color-tablero);
+    color: var(--color-blanco);
+    border: none;
+    border-radius: 8px;
+    padding: 0.6rem 1.2rem;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-top: 0.5rem;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.btn-reiniciar:hover {
+    background-color: var(--color-boton);
+    transform: translateY(-2px);
+}
+
+/* Contador global arriba del tablero */
+.contador-global {
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: #253D58;
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
 /* --- MEDIA QUERIES MÓVIL --- */
 @media (max-width: 450px) {
 
-    /* Tablero */
     .celda {
         width: 45px;
         height: 45px;
@@ -244,14 +305,12 @@ footer .emojis img {
         font-size: 1.2rem;
     }
 
-    /* Teclado */
     .fila-teclado button {
         width: 26px;
         height: 40px;
         font-size: 0.9rem;
     }
 
-    /* Botones del nav */
     nav li a {
         padding: 0.6rem;
     }
@@ -261,7 +320,6 @@ footer .emojis img {
         height: 25px;
     }
 
-    /* Contenedor del menú hamburguesa */
     .menu-container {
         padding: 0.3rem;
     }
@@ -278,4 +336,7 @@ footer .emojis img {
     footer p {
         font-size: 0.8rem;
     }
+
+
+
 }
