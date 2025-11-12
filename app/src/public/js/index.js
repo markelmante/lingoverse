@@ -1,10 +1,13 @@
-document.addEventListener('DOMContentLoaded', async () => {
+document.addEventListener('DOMContentLoaded', () => {
     const tablero = document.querySelector('.tablero');
     const teclado = document.querySelector('.teclado');
     const mensaje = document.getElementById('mensaje');
     const botonReiniciar = document.getElementById('btn-reiniciar');
+    const instrucciones = document.querySelector('.instrucciones'); 
+    const btnEmpezar = document.getElementById('btn-empezar'); 
     const maxIntentos = 5;
     const N = 5;
+
     let secreta = "";
     let filaActual = 0;
     let columnaActual = 0;
@@ -13,14 +16,21 @@ document.addEventListener('DOMContentLoaded', async () => {
     let tiempoRestante = 30;
     let tiempoTotal = 0;
     let totalInterval = null;
+    let temporizadorIniciado = false;
+    let bloqueandoEntrada = false; // NUEVO: bloquea input durante animación
 
-    // Crear contador global arriba del tablero
     const contadorGlobal = document.createElement('p');
     contadorGlobal.id = 'contador-global';
     contadorGlobal.classList.add('contador-global');
     tablero.parentNode.insertBefore(contadorGlobal, tablero);
 
     botonReiniciar.addEventListener('click', iniciarJuego);
+
+    btnEmpezar.addEventListener('click', () => {
+        instrucciones.style.display = 'none';
+        btnEmpezar.style.display = 'none';
+        iniciarJuego();
+    });
 
     async function iniciarJuego() {
         tiempoTotal = 0;
@@ -33,7 +43,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         filaActual = 0;
         columnaActual = 0;
         jugando = true;
+        bloqueandoEntrada = false;
         clearInterval(timerInterval);
+        temporizadorIniciado = false;
 
         try {
             const response = await fetch("http://185.60.43.155:3000/api/word/1");
@@ -46,12 +58,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             return;
         }
 
-        // Crear tablero
         for (let i = 0; i < maxIntentos; i++) {
             const fila = document.createElement('div');
             fila.classList.add('fila');
             fila.id = `fila-${i}`;
-
             for (let j = 0; j < N; j++) {
                 const celda = document.createElement('div');
                 celda.classList.add('celda');
@@ -61,11 +71,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             tablero.appendChild(fila);
         }
 
-        // Crear teclado
         const filasTeclado = [
-            ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"],
-            ["A", "S", "D", "F", "G", "H", "J", "K", "L", "Ñ"],
-            ["Z", "X", "C", "V", "B", "N", "M", "←"]
+            ["Q","W","E","R","T","Y","U","I","O","P"],
+            ["A","S","D","F","G","H","J","K","L","Ñ"],
+            ["Z","X","C","V","B","N","M","←"]
         ];
 
         filasTeclado.forEach(filaLetras => {
@@ -75,7 +84,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const boton = document.createElement('button');
                 boton.textContent = letra;
                 boton.addEventListener('click', () => {
-                    if (!jugando) return;
+                    if (!jugando || bloqueandoEntrada) return; // bloquea mientras flip
                     if (letra === "←") borrarLetra();
                     else agregarLetra(letra);
                 });
@@ -83,19 +92,15 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
             teclado.appendChild(fila);
         });
-
-        iniciarTemporizador();
     }
 
     function iniciarTemporizador() {
         clearInterval(timerInterval);
         tiempoRestante = 30;
         actualizarContador();
-
         timerInterval = setInterval(() => {
             tiempoRestante--;
             actualizarContador();
-
             if (tiempoRestante <= 0) {
                 clearInterval(timerInterval);
                 marcarFilaNula();
@@ -110,11 +115,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     function marcarFilaNula() {
         for (let j = 0; j < N; j++) {
             const celda = document.getElementById(`celda-${filaActual}-${j}`);
-            if (!celda.textContent) {
-                celda.style.backgroundColor = "gray";
-            }
+            if (!celda.textContent) celda.style.backgroundColor = "gray";
         }
-
         if (filaActual === maxIntentos - 1) {
             mensaje.textContent = `¡Tiempo agotado! La palabra era ${secreta}`;
             jugando = false;
@@ -122,11 +124,15 @@ document.addEventListener('DOMContentLoaded', async () => {
         } else {
             filaActual++;
             columnaActual = 0;
-            iniciarTemporizador();
+            temporizadorIniciado = false;
         }
     }
 
     function agregarLetra(letra) {
+        if (!temporizadorIniciado) {
+            iniciarTemporizador();
+            temporizadorIniciado = true;
+        }
         if (columnaActual < N) {
             const celda = document.getElementById(`celda-${filaActual}-${columnaActual}`);
             celda.textContent = letra;
@@ -134,6 +140,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
         if (columnaActual === N) {
             clearInterval(timerInterval);
+            temporizadorIniciado = false;
             validarFila();
         }
     }
@@ -147,6 +154,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     function validarFila() {
+        bloqueandoEntrada = true; // BLOQUEO de input
         const fila = [];
         for (let j = 0; j < N; j++) {
             fila.push(document.getElementById(`celda-${filaActual}-${j}`).textContent.toUpperCase());
@@ -176,28 +184,35 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         for (let i = 0; i < N; i++) {
             const celda = document.getElementById(`celda-${filaActual}-${i}`);
-            celda.style.backgroundColor = resultado[i];
+            setTimeout(() => {
+                celda.classList.add('flip');
+                setTimeout(() => {
+                    celda.style.backgroundColor = resultado[i];
+                    celda.classList.remove('flip');
+                    // último flip desbloquea input
+                    if (i === N - 1) bloqueandoEntrada = false;
+                }, 300);
+            }, i * 300);
         }
 
-        if (fila.join("") === secreta) {
-            mensaje.textContent = `¡Has ganado! Has acertado en ${tiempoTotal} segundos.`;
-            jugando = false;
-            botonReiniciar.style.display = "inline-block";
-        } else if (filaActual === maxIntentos - 1) {
-            mensaje.textContent = `¡Has perdido! La palabra era ${secreta}`;
-            jugando = false;
-            botonReiniciar.style.display = "inline-block";
-        } else {
-            filaActual++;
-            columnaActual = 0;
-            iniciarTemporizador();
-        }
+        setTimeout(() => {
+            if (fila.join("") === secreta) {
+                mensaje.textContent = `¡Has ganado! Has acertado en ${tiempoTotal} segundos.`;
+                jugando = false;
+                botonReiniciar.style.display = "inline-block";
+            } else if (filaActual === maxIntentos - 1) {
+                mensaje.textContent = `¡Has perdido! La palabra era ${secreta}`;
+                jugando = false;
+                botonReiniciar.style.display = "inline-block";
+            } else {
+                filaActual++;
+                columnaActual = 0;
+                temporizadorIniciado = false;
+            }
+        }, N * 300 + 50);
     }
 
-    // Menú hamburguesa
     const hamburguesa = document.querySelector('.menu-toggle');
     const menu = document.querySelector('.nav-menu');
     hamburguesa.addEventListener('click', () => menu.classList.toggle('active'));
-
-    iniciarJuego();
 });

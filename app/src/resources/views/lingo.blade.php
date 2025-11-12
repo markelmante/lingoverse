@@ -38,6 +38,23 @@
     </header>
 
     <main>
+        <div class="instrucciones" id="instrucciones">
+            <h2>¡Bienvenido a Lingo!</h2>
+            <p>Tu objetivo es adivinar la palabra secreta en un máximo de 5 intentos. Cada palabra que escribas debe
+                tener el mismo número de letras que la palabra oculta.</p>
+            <p>Después de cada intento, recibirás pistas para ayudarte:</p>
+            <ul>
+                <li>🟩 La letra está en el lugar correcto.</li>
+                <li>🟧 La letra está en la palabra pero en otra posición.</li>
+                <li>🟥 La letra no está en la palabra.</li>
+            </ul>
+            <p>Si introduces una palabra que no existe, se considerará como un intento fallido, pero no se mostrarán
+                pistas. ¡No te preocupes, sigue intentando!</p>
+            <p>Tendrás un tiempo límite para escribir cada palabra, así que ¡piensa rápido y diviértete!</p>
+            <p>¿Listo para demostrar tu habilidad con las palabras? ¡Comencemos!</p>
+            <button id="btn-empezar" class="btn-empezar">Empezar juego</button>
+        </div>
+
         <div class="tablero"></div>
         <div class="teclado"></div>
         <p id="mensaje" class="mensaje"></p>

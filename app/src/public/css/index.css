@@ -31,7 +31,6 @@ body {
 .encabezado {
     display: flex;
     justify-content: space-between;
-    /* logo a la izq, iconos a la der */
     align-items: center;
     width: 100%;
     margin-bottom: 1rem;
@@ -48,7 +47,6 @@ body {
     display: flex;
     align-items: center;
     gap: 0.8rem;
-    /* separación entre iconos */
 }
 
 .cuenta,
@@ -64,7 +62,6 @@ body {
     transform: scale(1.1);
 }
 
-/* Form del logout invisible visualmente */
 .logout-form {
     margin: 0;
 }
@@ -75,7 +72,6 @@ body {
     padding: 0;
     cursor: pointer;
 }
-
 
 .btn-logout img.icono-logout {
     width: 40px;
@@ -174,6 +170,53 @@ main {
     flex: 1;
 }
 
+.btn-empezar {
+    background-color: var(--color-boton);
+    color: var(--color-blanco);
+    border: none;
+    border-radius: 8px;
+    padding: 0.8rem 1.5rem;
+    font-size: 1.2rem;
+    cursor: pointer;
+    margin-bottom: 1rem;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.btn-empezar:hover {
+    background-color: var(--color-tablero);
+    transform: translateY(-2px);
+}
+
+.instrucciones {
+    background-color: var(--color-blanco);
+    border-radius: 10px;
+    padding: 1rem;
+    width: 100%;
+    max-width: 600px;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+    margin-bottom: 1rem;
+}
+
+.instrucciones h2 {
+    color: var(--color-tablero);
+    margin-bottom: 0.5rem;
+    text-align: center;
+}
+
+.instrucciones p,
+.instrucciones ul {
+    margin-bottom: 0.5rem;
+    line-height: 1.4;
+}
+
+.instrucciones ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.instrucciones li {
+    margin-bottom: 0.3rem;
+}
 
 /* --- TABLERO --- */
 .tablero {
@@ -186,37 +229,10 @@ main {
     width: 100%;
 }
 
-
-/* Contenedor de cada fila + contador */
-.fila-contenedor {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 1rem;
-    width: 100%;
-}
-
-/* Fila de celdas */
 .fila {
     display: flex;
     justify-content: center;
     gap: 0.5rem;
-}
-
-/* Contador de tiempo */
-.contador {
-    font-weight: bold;
-    color: #253D58;
-    font-size: 1rem;
-    min-width: 45px;
-    text-align: left;
-}
-
-.mensaje {
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: #000;
-    text-align: center;
 }
 
 .celda {
@@ -231,6 +247,14 @@ main {
     font-size: 1.5rem;
     font-weight: bold;
     text-transform: uppercase;
+    backface-visibility: hidden;
+    transform-style: preserve-3d;
+    transition: transform 0.6s;
+}
+
+/* Animación flip */
+.celda.flip {
+    transform: rotateX(180deg);
 }
 
 /* Teclado */
@@ -252,40 +276,15 @@ main {
     font-size: 1rem;
     border: none;
     border-radius: 5px;
-    background-color: #7DACDA;
+    background-color: var(--color-boton);
     color: white;
     cursor: pointer;
     transition: transform 0.1s, background-color 0.2s;
 }
 
 .fila-teclado button:hover {
-    background-color: #5D8EC3;
+    background-color: var(--color-tablero);
     transform: translateY(-2px);
-}
-
-/* --- FOOTER --- */
-footer {
-    background-color: var(--color-footer-nav);
-    color: var(--color-blanco);
-    padding: 1rem;
-    width: 100%;
-}
-
-footer .footer-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-footer .emojis {
-    display: flex;
-    gap: 1rem;
-}
-
-footer .emojis img {
-    width: 30px;
-    height: 30px;
 }
 
 .mensaje {
@@ -313,7 +312,6 @@ footer .emojis img {
     transform: translateY(-2px);
 }
 
-/* Contador global arriba del tablero */
 .contador-global {
     font-weight: bold;
     font-size: 1.2rem;
@@ -322,9 +320,33 @@ footer .emojis img {
     margin-bottom: 1rem;
 }
 
-/* --- MEDIA QUERIES MÓVIL --- */
-@media (max-width: 450px) {
+/* --- FOOTER --- */
+footer {
+    background-color: var(--color-footer-nav);
+    color: var(--color-blanco);
+    padding: 1rem;
+    width: 100%;
+}
 
+footer .footer-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+footer .emojis {
+    display: flex;
+    gap: 1rem;
+}
+
+footer .emojis img {
+    width: 30px;
+    height: 30px;
+}
+
+/* --- MEDIA QUERIES --- */
+@media (max-width: 450px) {
     .celda {
         width: 45px;
         height: 45px;
@@ -363,7 +385,4 @@ footer .emojis img {
     footer p {
         font-size: 0.8rem;
     }
-
-
-
 }
