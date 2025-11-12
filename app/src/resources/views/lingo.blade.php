@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lingo</title>
     <link rel="stylesheet" href="{{ asset('css/index.css') }}">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 
 <body>
@@ -14,7 +15,10 @@
             <img src="{{ asset('Imagenes/logo.png') }}" alt="Logo Lingo" class="logo">
 
             <div class="iconos-derecha">
-                <img src="{{ asset('Imagenes/cuenta.png') }}" alt="Cuenta" class="cuenta">
+                <a href="{{ route('profile.edit') }}" title="Ir a Configuración de Perfil">
+                    <img src="{{ asset('Imagenes/cuenta.png') }}" alt="Cuenta" class="cuenta">
+                </a>
+                
                 <form method="POST" action="{{ route('logout') }}" class="logout-form">
                     @csrf
                     <button type="submit" class="btn-logout" title="Cerrar sesión">
@@ -30,9 +34,8 @@
 
         <nav class="nav-menu">
             <ul>
-                <li><a href="#"><img src="{{ asset('Imagenes/inicio.png') }}" alt=""> Inicio</a></li>
-                <li><a href="#"><img src="{{ asset('Imagenes/jugar.png') }}" alt=""> Jugar</a></li>
-                <li><a href="#"><img src="{{ asset('Imagenes/estadisticas.png') }}" alt=""> Estadísticas</a></li>
+                <li><a href="#" id="btn-inicio"><img src="{{ asset('Imagenes/inicio.png') }}" alt=""> Inicio</a></li>
+                <li><a href="#" id="btn-ranking"><img src="{{ asset('Imagenes/estadisticas.png') }}" alt=""> Ranking</a></li>
             </ul>
         </nav>
     </header>
@@ -60,6 +63,14 @@
         <p id="mensaje" class="mensaje"></p>
         <button id="btn-reiniciar" class="btn-reiniciar">Volver a jugar</button>
     </main>
+
+    <div id="modal-ranking" class="modal-ranking">
+        <div class="modal-content">
+            <span id="cerrar-ranking" class="cerrar-ranking">&times;</span>
+            <h3>Top 10 Rankings</h3>
+            <ul id="lista-ranking"></ul>
+        </div>
+    </div>
 
     <script src="{{ asset('js/index.js') }}"></script>
 

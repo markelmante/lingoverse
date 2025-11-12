@@ -1,3 +1,6 @@
+/* ====================================
+   VARIABLES CSS (RAÍZ)
+   ==================================== */
 :root {
     --color-blanco: #FFFFFF;
     --color-fondo: #C2DCF2;
@@ -7,14 +10,16 @@
     --fuente-principal: 'Viga', sans-serif;
 }
 
+/* ====================================
+   RESET / ESTILOS GLOBALES
+   ==================================== */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-html,
-body {
+html, body {
     height: 100%;
 }
 
@@ -27,7 +32,9 @@ body {
     min-height: 100vh;
 }
 
-/* --- HEADER --- */
+/* ====================================
+   ENCABEZADO (HEADER)
+   ==================================== */
 .encabezado {
     display: flex;
     justify-content: space-between;
@@ -49,16 +56,14 @@ body {
     gap: 0.8rem;
 }
 
-.cuenta,
-.icono-logout {
+.cuenta, .icono-logout {
     width: 40px;
     height: 40px;
     cursor: pointer;
     transition: transform 0.3s;
 }
 
-.cuenta:hover,
-.icono-logout:hover {
+.cuenta:hover, .icono-logout:hover {
     transform: scale(1.1);
 }
 
@@ -83,6 +88,7 @@ body {
     transform: scale(1.1);
 }
 
+/* --- MENÚ DE NAVEGACIÓN (NAV) --- */
 .menu-container {
     width: 100%;
     background-color: var(--color-footer-nav);
@@ -159,7 +165,9 @@ nav li a:hover img {
     transform: scale(1.2);
 }
 
-/* --- MAIN --- */
+/* ====================================
+   CONTENIDO PRINCIPAL (MAIN)
+   ==================================== */
 main {
     display: flex;
     flex-direction: column;
@@ -167,9 +175,10 @@ main {
     justify-content: flex-start;
     gap: 1rem;
     padding: 0.5rem 1rem 1rem;
-    flex: 1;
+    flex: 1; /* Para que ocupe el espacio restante */
 }
 
+/* --- Botón Empezar --- */
 .btn-empezar {
     background-color: var(--color-boton);
     color: var(--color-blanco);
@@ -187,6 +196,7 @@ main {
     transform: translateY(-2px);
 }
 
+/* --- Instrucciones --- */
 .instrucciones {
     background-color: var(--color-blanco);
     border-radius: 10px;
@@ -203,8 +213,7 @@ main {
     text-align: center;
 }
 
-.instrucciones p,
-.instrucciones ul {
+.instrucciones p, .instrucciones ul {
     margin-bottom: 0.5rem;
     line-height: 1.4;
 }
@@ -218,7 +227,20 @@ main {
     margin-bottom: 0.3rem;
 }
 
-/* --- TABLERO --- */
+/* --- Contador Global --- */
+.contador-global {
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: #253D58;
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+/* ====================================
+   JUEGO: TABLERO Y TECLADO
+   ==================================== */
+
+/* --- Tablero --- */
 .tablero {
     display: flex;
     flex-direction: column;
@@ -257,7 +279,7 @@ main {
     transform: rotateX(180deg);
 }
 
-/* Teclado */
+/* --- Teclado --- */
 .teclado {
     display: flex;
     flex-direction: column;
@@ -287,6 +309,7 @@ main {
     transform: translateY(-2px);
 }
 
+/* --- Mensajes y Botones de Control --- */
 .mensaje {
     font-size: 1.2rem;
     font-weight: bold;
@@ -312,15 +335,9 @@ main {
     transform: translateY(-2px);
 }
 
-.contador-global {
-    font-weight: bold;
-    font-size: 1.2rem;
-    color: #253D58;
-    text-align: center;
-    margin-bottom: 1rem;
-}
-
-/* --- FOOTER --- */
+/* ====================================
+   PIE DE PÁGINA (FOOTER)
+   ==================================== */
 footer {
     background-color: var(--color-footer-nav);
     color: var(--color-blanco);
@@ -345,8 +362,74 @@ footer .emojis img {
     height: 30px;
 }
 
-/* --- MEDIA QUERIES --- */
+/* --- MODAL RANKING --- */
+.modal-ranking {
+    display: none; /* Oculto por defecto, JS lo cambia a flex */
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5); 
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-ranking .modal-content {
+    background-color: var(--color-blanco);
+    margin: auto;
+    padding: 1.5rem;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    text-align: center;
+}
+
+.modal-ranking h3 {
+    color: var(--color-tablero);
+    margin-bottom: 1rem;
+}
+
+.modal-ranking ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.modal-ranking ul li {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #ddd;
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+.modal-ranking ul li:last-child {
+    border-bottom: none;
+}
+
+.cerrar-ranking {
+    color: #aaa;
+    float: right;
+    font-size: 1.5rem;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.cerrar-ranking:hover,
+.cerrar-ranking:focus {
+    color: var(--color-tablero);
+    text-decoration: none;
+}
+
+
+/* ====================================
+   MEDIA QUERIES (ADAPTABILIDAD)
+   ==================================== */
 @media (max-width: 450px) {
+    /* Ajustes de celdas y teclado para pantallas muy pequeñas */
     .celda {
         width: 45px;
         height: 45px;
@@ -360,6 +443,7 @@ footer .emojis img {
         font-size: 0.9rem;
     }
 
+    /* Ajustes del menú de navegación */
     nav li a {
         padding: 0.6rem;
     }
@@ -377,6 +461,7 @@ footer .emojis img {
         font-size: 1.8rem;
     }
 
+    /* Ajustes del pie de página */
     footer .emojis img {
         width: 25px;
         height: 25px;

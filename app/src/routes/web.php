@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PalabraController;
+use App\Http\Controllers\RankingController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -41,5 +42,13 @@ Route::resource('palabras', PalabraController::class);
 
 //Ruta que devuelve de la tabla 'palabras' la cantidad de palabras aleatorias solicitada por URL y sino, devuelve 5 palabras
 Route::get('/palabrasRandom/{cantidad?}', [PalabraController::class, 'indexRandom'])->name('palabras.indexRandomw');
+
+
+
+// Rutas protegidas: solo usuarios logueados pueden guardar ranking
+Route::middleware('auth')->group(function () {
+    Route::post('/ranking', [RankingController::class, 'store']);  // guardar score
+    Route::get('/ranking', [RankingController::class, 'index']);   // listar top 10
+});
 
 require __DIR__ . '/auth.php';

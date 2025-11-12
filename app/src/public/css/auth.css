@@ -179,4 +179,82 @@ html, body {
     .auth-footer p {
         font-size: 0.8rem;
     }
+
+    /* ====================================
+   ESTILOS ESPECÍFICOS PARA PERFIL (BREEZE)
+   ==================================== */
+.profile-section {
+    padding: 1rem 0;
+    border-bottom: 1px solid #eee;
+}
+
+.profile-section:last-child {
+    border-bottom: none;
+}
+
+.profile-section h2 {
+    font-size: 1.3rem;
+    color: var(--color-footer-nav);
+    margin-bottom: 0.5rem;
+    border-bottom: 1px solid var(--color-boton);
+    padding-bottom: 0.3rem;
+}
+
+.profile-section form > div {
+    margin-bottom: 1rem;
+}
+
+.profile-section form label {
+    display: block;
+    margin-bottom: 0.3rem;
+    font-weight: bold;
+    color: #253D58;
+}
+
+.profile-section form input[type="text"],
+.profile-section form input[type="email"],
+.profile-section form input[type="password"] {
+    width: 100%;
+    padding: 0.7rem 1rem;
+    border: 2px solid var(--color-boton);
+    border-radius: 8px;
+    font-size: 1rem;
+    outline: none;
+}
+
+.profile-section button[type="submit"] {
+    display: inline-block;
+    padding: 0.8rem 1rem;
+    font-size: 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    background-color: var(--color-boton);
+    color: var(--color-blanco);
+    border: none;
+    margin-top: 1rem;
+}
+
+.profile-section button[type="submit"]:hover {
+    background-color: var(--color-tablero);
+}
+
+.profile-section .text-sm {
+    color: red;
+    font-size: 0.8rem;
+    margin-top: 0.2rem;
+    display: block;
+}
+
+.profile-section .delete-button {
+    background-color: #f44336;
+}
+
+.profile-section .delete-button:hover {
+    background-color: #d32f2f;
+}
+
+.auth-container {
+    min-height: calc(100vh - 80px);
+}
 }
