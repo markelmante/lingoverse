@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bienvenido a Lingo</title>
     <link rel="stylesheet" href="{{ asset('css/index.css') }}">
 </head>
-<body>
+
+<body class="body-flex-col">
     <header>
         <div class="encabezado">
             <img src="{{ asset('Imagenes/logo.png') }}" alt="Logo Lingo" class="logo">
@@ -14,16 +16,16 @@
     </header>
 
     <main>
-        <div style="text-align: center; margin-top: 2rem;">
+        <div class="welcome-content">
             <h1>¡Bienvenido a <span style="color: var(--color-footer-nav);">Lingo</span>!</h1>
             <p>El juego de palabras más divertido para desafiar tu mente.</p>
 
-            <div style="margin-top: 2rem;">
+            <div class="auth-buttons">
                 @auth
-                    <a href="{{ url('/lingo') }}" class="btn-reiniciar" style="display:inline-block;">Ir al juego</a>
+                    <a href="{{ url('/lingo') }}" class="btn-reiniciar">Ir al juego</a>
                 @else
-                    <a href="{{ route('login') }}" class="btn-reiniciar" style="display:inline-block;">Iniciar sesión</a>
-                    <a href="{{ route('register') }}" class="btn-reiniciar" style="display:inline-block; margin-left: 1rem;">Registrarse</a>
+                    <a href="{{ route('login') }}" class="btn-reiniciar">Iniciar sesión</a>
+                    <a href="{{ route('register') }}" class="btn-reiniciar">Registrarse</a>
                 @endauth
             </div>
         </div>
@@ -38,6 +40,8 @@
             </div>
             <p>© 2025 Lingo. Todos los derechos reservados.</p>
         </div>
+        F
     </footer>
 </body>
+
 </html>

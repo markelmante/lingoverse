@@ -9,16 +9,21 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 
-<body>
+{{-- CRÍTICO: Se añade la clase para activar el Flexbox y el Sticky Footer --}}
+<body class="body-flex-col"> 
     <header>
         <div class="encabezado">
             <img src="{{ asset('Imagenes/logo.png') }}" alt="Logo Lingo" class="logo">
 
             <div class="iconos-derecha">
-                <a href="{{ route('profile.edit') }}" title="Ir a Configuración de Perfil">
+                <a href="{{ route('profile.edit') }}" title="Ir a Configuración de Perfil" class="btn-header-wrapper">
                     <img src="{{ asset('Imagenes/cuenta.png') }}" alt="Cuenta" class="cuenta">
                 </a>
-                
+
+                <button type="button" id="btn-ranking-header" class="btn-ranking-header" title="Ver Ranking">
+                    <img src="{{ asset('Imagenes/estadisticas.png') }}" alt="Ranking" class="icono-ranking">
+                </button>
+
                 <form method="POST" action="{{ route('logout') }}" class="logout-form">
                     @csrf
                     <button type="submit" class="btn-logout" title="Cerrar sesión">
@@ -35,7 +40,7 @@
         <nav class="nav-menu">
             <ul>
                 <li><a href="#" id="btn-inicio"><img src="{{ asset('Imagenes/inicio.png') }}" alt=""> Inicio</a></li>
-                <li><a href="#" id="btn-ranking"><img src="{{ asset('Imagenes/estadisticas.png') }}" alt=""> Ranking</a></li>
+                <li><a href="#" id="btn-ranking-menu"><img src="{{ asset('Imagenes/estadisticas.png') }}" alt=""> Ranking</a></li>
             </ul>
         </nav>
     </header>
@@ -51,8 +56,7 @@
                 <li>🟧 La letra está en la palabra pero en otra posición.</li>
                 <li>🟥 La letra no está en la palabra.</li>
             </ul>
-            <p>Si introduces una palabra que no existe, se considerará como un intento fallido, pero no se mostrarán
-                pistas. ¡No te preocupes, sigue intentando!</p>
+            <p>Si introduces una palabra que no existe o se acaba el tiempo, pierdes la ronda y la fila se pondrá **gris**.</p>
             <p>Tendrás un tiempo límite para escribir cada palabra, así que ¡piensa rápido y diviértete!</p>
             <p>¿Listo para demostrar tu habilidad con las palabras? ¡Comencemos!</p>
             <button id="btn-empezar" class="btn-empezar">Empezar juego</button>
