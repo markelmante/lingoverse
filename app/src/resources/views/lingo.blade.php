@@ -32,17 +32,6 @@
                 </form>
             </div>
         </div>
-
-        <div class="menu-container">
-            <div class="menu-toggle">&#9776;</div>
-        </div>
-
-        <nav class="nav-menu">
-            <ul>
-                <li><a href="#" id="btn-inicio"><img src="{{ asset('Imagenes/inicio.png') }}" alt=""> Inicio</a></li>
-                <li><a href="#" id="btn-ranking-menu"><img src="{{ asset('Imagenes/estadisticas.png') }}" alt=""> Ranking</a></li>
-            </ul>
-        </nav>
     </header>
 
     <main>
