@@ -1,49 +1,24 @@
-🧩 LINGOverse: El Desafío de Palabras
-🌍 Introducción al Proyecto
+🚀 Guía de Despliegue (Pasos Corregidos)
 
-LINGOverse es una aplicación web multijugador inspirada en Wordle, desarrollada como parte de la evaluación del módulo DWES / SSII.
-El objetivo es ofrecer una plataforma persistente para gestionar partidas y rankings de jugadores.
+Coloca la terminal en la carpeta raíz del proyecto (donde se encuentra docker-compose.yml).
 
-La aplicación utiliza una arquitectura de microservicios con contenedores Docker, lo que garantiza un entorno de desarrollo reproducible y portátil (Stack LEMA).
+1️⃣ Levantar los Contenedores
+# (opcional) reconstruir imágenes si cambiaste Dockerfiles
+docker compose build
 
-🛠️ Tecnologías Utilizadas
-Categoría	Tecnología	Uso
-Backend (Servidor)	Laravel 10/11	API RESTful, Lógica de juego, Autenticación y ORM
-Frontend (Cliente)	Vue.js + Vite	Interfaz de usuario dinámica y experiencia de juego
-Base de Datos	MySQL 8.0	Persistencia de datos de usuarios y rankings
-Contenerización	Docker Compose	Gestión de servicios, aislamiento y red interna
-Servidor Web	Apache 2.4	Servidor HTTP principal para el acceso web
-🚀 Guía de Despliegue (Pasos Detallados)
+# levantar servicios en segundo plano
+docker compose up -d
 
-Una vez descargado el proyecto de GitHub, asegúrate de colocar la terminal en la carpeta principal del proyecto (donde se encuentra el archivo docker-compose.yml).
-
-1️⃣ Preparación de Contenedores
-
-Ejecuta los siguientes comandos en la carpeta raíz del proyecto:
-
-Paso	Comando	Descripción
-1	bash<br>docker compose build<br>	Construye las imágenes de Docker (si se han realizado cambios en los Dockerfiles).
-2	bash<br>docker compose up -d<br>	Levanta todos los servicios (web, db, node, phpmyadmin) en segundo plano.
-3	bash<br>docker ps<br>	Comprueba que todos los contenedores estén en marcha y en estado Up.
-2️⃣ Configuración de la Aplicación y Base de Datos (Dentro del Contenedor Web)
-
-Accede al contenedor web (PHP-Apache) para instalar dependencias y configurar Laravel.
-
-# 4. Acceder al contenedor web
-docker compose exec web bash
-
-# 5. Instalar dependencias de Laravel
-composer install
-
-# 6. Generar clave de aplicación (fallará sin .env)
-php artisan key:generate
+# comprobar contenedores en marcha
+docker ps
 
 
-Este comando fallará porque el archivo .env no existe aún.
+Asegúrate de que los servicios web y db estén en estado Up.
+Si MySQL tarda en arrancar, repite los pasos de migración más adelante.
 
-7️⃣ Crear el archivo .env
+2️⃣ Crear el Archivo .env
 
-Sal del contenedor (exit) y crea el archivo src/.env con el siguiente contenido (asegúrate de que las credenciales coincidan con docker-compose.yml):
+Crea el archivo src/.env antes de instalar dependencias o generar la clave de aplicación:
 
 APP_NAME=Lingo
 APP_ENV=local
@@ -78,38 +53,64 @@ SESSION_LIFETIME=120
 # ======================
 VITE_APP_URL=http://localhost:5173
 
-
-Luego, vuelve a entrar al contenedor web:
-
+3️⃣ Instalar Dependencias de Laravel y Configurar la Aplicación
+# entrar al contenedor web (PHP + Apache)
 docker compose exec web bash
 
+# instalar dependencias PHP
+composer install
 
-Y ejecuta los siguientes comandos:
-
-# 8. Volver a generar la clave de aplicación
+# generar clave de aplicación
 php artisan key:generate
 
-# 9. Aplicar las migraciones de base de datos
+# aplicar migraciones
 php artisan migrate
 
-# 10. Dar permisos a las carpetas
-chmod -R 777 storage bootstrap/cache
+# dar permisos a las carpetas necesarias
+chmod -R 775 storage bootstrap/cache
 
-# Salir del contenedor
+# recargar Apache
+service apache2 reload
+
+# salir del contenedor
 exit
 
-3️⃣ Configuración DNS y Apache (Acceso por lingo.local)
+4️⃣ Configurar el Frontend (Vite / Node)
+# entrar al contenedor node
+docker compose exec node bash
 
-Para acceder a la aplicación desde el dominio lingo.local, configura el Virtual Host de Apache y el archivo hosts del sistema operativo.
+# instalar dependencias
+npm install
 
-🧩 3.1 Configuración de Apache (Dentro del contenedor web)
+# entorno de desarrollo con hot reload
+npm run dev
 
-Edita el archivo de configuración de Apache (por ejemplo /etc/apache2/sites-available/lingo.conf) para añadir las líneas ServerName y ServerAlias.
+# o compilación para producción
+npm run build
 
-Contenido del VirtualHost Final:
+# salir del contenedor
+exit
+
+
+Accede al frontend en:
+http://localhost:5173
+
+5️⃣ phpMyAdmin (Opcional)
+
+Si tu docker-compose.yml incluye phpMyAdmin, estará disponible en:
+http://localhost:8080
+
+Usa las credenciales definidas en .env:
+
+DB_USERNAME=markel
+DB_PASSWORD=daw3
+
+6️⃣ Configuración de Apache y DNS Local (lingo.local)
+🧩 Configuración de Apache (Dentro del Contenedor web)
+
+Edita el archivo /etc/apache2/sites-available/lingo.conf con el siguiente contenido:
 
 <VirtualHost *:80>
-    # La carpeta 'public' de Laravel es la raíz de la aplicación
     DocumentRoot /var/www/html/public
     ServerName lingo.local
     ServerAlias www.lingo.local
@@ -124,41 +125,53 @@ Contenido del VirtualHost Final:
 </VirtualHost>
 
 
-Comandos de activación (dentro del contenedor web):
+Ejecuta estos comandos dentro del contenedor web:
 
-# Activa el módulo rewrite (necesario para las rutas de Laravel)
 a2enmod rewrite
-
-# Activa el sitio lingo.conf y desactiva el sitio por defecto
 a2ensite lingo.conf
 a2dissite 000-default.conf
-
-# Reinicia Apache para aplicar cambios
 service apache2 reload
 
-💻 3.2 Configuración del Archivo HOSTS (En el Sistema Operativo Host)
+💻 Configuración del Archivo hosts (en el Sistema Operativo Host)
 
-Abre el Bloc de Notas (o editor de texto) como Administrador.
-
-Abre el archivo:
+Edita el archivo:
 
 C:\Windows\System32\drivers\etc\hosts
 
 
-Añade la siguiente línea al final del archivo:
+Y añade al final:
 
 127.0.0.1 lingo.local
 
 
-Ahora puedes acceder a la aplicación desde tu navegador:
-👉 http://lingo.local
+Ahora podrás acceder a la aplicación en:
+http://lingo.local
 
 ⚙️ Estructura de Red Docker
-
-Todos los contenedores están interconectados a través de la red lingo_network.
-
 Contenedor	Función	Puerto de Acceso
 lingo-apache (web)	Servidor Web y PHP	80
 lingo-mysql (db)	Base de Datos MySQL	Interno a 3306
 lingo-node-vite (node)	Desarrollo Frontend (Vite)	5173
-lingo-phpmyadmin	Interfaz Gráfica de BD	8080
+lingo-phpmyadmin	Interfaz de Base de Datos	8080
+✅ Resumen Rápido
+docker compose build
+docker compose up -d
+
+# crear src/.env
+
+docker compose exec web bash
+composer install
+php artisan key:generate
+php artisan migrate
+chmod -R 775 storage bootstrap/cache
+exit
+
+docker compose exec node bash
+npm install
+npm run dev
+exit
+
+
+Accede a la app en:
+http://localhost
+ o http://lingo.local
