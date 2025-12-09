@@ -1,4 +1,4 @@
-# 🚀 Guía de Despliegue (Pasos Corregidos)
+# 🚀 Guía de Despliegue
 
 Coloca la terminal en la carpeta raíz del proyecto (donde se encuentra `docker-compose.yml`).
 
